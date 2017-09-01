@@ -72,7 +72,15 @@ Once Django has finished installing from the command line, then perform the foll
 
 ### 3. Installing MongoDB
 
+Please refer to [this guide](https://docs.mongodb.com/manual/administration/install-community/) for platform-specific instructions on installing MongoDB to your system.
+
 #### Verifying MongoDB Installation
+
+Try the following:
+1. Open two terminal/command line shells or tabs.
+2. On one terminal shell, run `mongod`. You should get a detailed log with no prompts to continue entering input.
+3. On the other terminal shell, run `mongo`. You should get a prompt to run commands.
+4. In the `mongo` shell, try running the mongo command `show dbs`. If you see several databases listed, everything is good to go!
 
 ### 4. Installing mongoengine
 
