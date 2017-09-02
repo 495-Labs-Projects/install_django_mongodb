@@ -54,7 +54,7 @@ If not, try re-starting cmd/Powershell or checking it is properly added to your 
 
 Now we will install Django, the Python package which allows us to create web applications with relative ease. The installation process for Django is relatively simple, because it only requires **pip**, the Python Package Installer, to install.
 
-**NOTE: For the following steps, if you got the correct version of Python to show from the command line by running the command `python3 --version`, please be sure to run `pip3` instead of `pip`!**
+**NOTE: For the following steps, if you got the correct version of Python to show from the command line by running the command `python3 --version`, please be sure to run `pip3` instead of `pip`! Same for using `python3` in place of `python`**
 
 1. Open Terminal or the command line
 2. run `pip install django`
@@ -84,7 +84,45 @@ Try the following:
 
 ### 4. Installing mongoengine
 
-#### Connecting MongoD and mongoengine
+[mongoengine](http://mongoengine.org/) is a connector allowing for the use of a MongoDB database within a Django or Flask Python application (Django is supported, contrary to a graphic on their website).
+
+There is extensive documentation on mongoengine, which you can find [here](http://mongoengine.readthedocs.io/en/latest/tutorial.html). **This will definitely come in handy during the semester**.
+
+mongoengine can be installed with a simple pip install. Open terminal/command prompt and run the following command:
+
+`pip install mongoengine`
 
 #### Verifying mongoengine Installation
 
+Once mongoengine has finished installing from the command line, then perform the following:
+1. Open Terminal or the command line
+2. run `python` to open the Python REPL
+3. run `import mongoengine` from inside of the Python REPL.
+4. If the next line is blank (or simply `>>>`), then mongoengine is installed!
+5. Again, check the version of Python to be 3.4.X (shown on the first line of the REPL)
+
+#### Connecting mongod and mongoengine
+
+Down the line, we must connect the mongoengine to a running MongoDB server to access the database. You can start a new project by running `django-admin startproject <projectname>`.
+
+1. Open Terminal or the command line.
+2. Run `mongod` to start a local MongoDB server.
+3. Open the django project `settings.py` file which can be found in the `<projectname>/<projectname>/settings.py`.
+4. At the top of the `settings.py` file, we need to import the mongoengine library, so add `import mongoengine` after `import os`.
+5. In the `settings.py` file, find the DATABASES variable, and modify it to:
+```python
+DATABASES = {
+    'default': {
+        'ENGINE': '',
+    },
+}
+```
+to remove the existing SQLite database.
+6. Under the DATABASES variable, we will add the call to connect to the MongoDB server, running through our `mongod` call from step 2:
+`mongoengine.connect(DB_NAME, host='mongodb://DB_USER:DB_USER_PASSWORD@localhost/DB_NAME')`
+For more on the connection syntax, check out the [official documentation](http://mongoengine.readthedocs.io/en/latest/guide/connecting.html).
+7. In a new Terminal/Command Line window, navigate into the greater `<projectname>` project directory and run `python manage.py runserver` to start the Django server.
+8. If all is good, you will see new connections appear in the log of the `mongod` console, and you should be able to navigate to the address provided by django in the `python manage.py runserver` terminal/command line (http://127.0.0.1:8000/) with no issues.
+
+### 5. Further Security and Sessions
+TBD
