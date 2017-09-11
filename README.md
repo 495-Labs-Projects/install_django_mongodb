@@ -129,4 +129,33 @@ For more on the connection syntax, check out the [official documentation](http:/
 8. If all is good, you will see new connections appear in the log of the `mongod` console, and you should be able to navigate to the address provided by django in the `python manage.py runserver` terminal/command line (http://127.0.0.1:8000/) with no issues.
 
 ## 5. Further Security and Sessions
-TBD
+
+Mongoengine supports authentication and setup is relatively simple. 
+
+First open the `settings.py` file and add the following lines under the DATABASES variable definition:
+```python
+SESSION_ENGINE = 'mongoengine.django.sessions'
+AUTHENTICATION_BACKENDS = (
+    'mongoengine.django.auth.MongoEngineBackend',
+)
+```	
+
+This informs Django to use mongoengine's authentication, but we now must call them. To use mongoengine sessions in your application, in your `<projectname>/views.py` file, be sure to include the following:
+
+```python
+import mongoengine
+
+# ...
+
+user = authenticate(username=username, password=password)
+assert isinstance(user, mongoengine.django.auth.User)
+login(request, user) #login to session
+```
+`authenticate` is the method used to check a username and password. You can read more about using mongoengine authentication [here](http://mongoengine.readthedocs.io/en/latest/apireference.html?highlight=authenticate).
+
+## 6. Testing
+Testing using MongoDB in Django is nearly identical to testing with any other database in Django.
+
+All that needs to be done is to add the following test runner in `settings.py` (anywhere):
+
+```TEST_RUNNER = 'yourproject.tests.NoSQLTestRunner'```
